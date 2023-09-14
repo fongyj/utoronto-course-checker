@@ -1,5 +1,6 @@
 import requests
 import time
+from notify_run import Notify
 
 url = r"https://api.easi.utoronto.ca/ttb/getPageableCourses"
 interested_courses = [
@@ -29,6 +30,8 @@ payload = {"courseCodeAndTitleProps":
             "direction":"asc"}
 headers = {"Accept": "application/json"}
 
+notify = Notify()
+
 while True:
     for interested_course in interested_courses:
         course_payload = dict(payload)
@@ -38,12 +41,15 @@ while True:
         response = requests.post(url, json=course_payload, headers=headers)
         response = response.json()
         course = response["payload"]["pageableCourse"]["courses"][0]
-        print(course["name"] + " " + course["code"] + "\r")
         sections = course["sections"]
         for section in sections:
+            message = course["code"] + " " + course["name"]
             if section["type"] == "Lecture":
-                print(section["type"], section["name"])
-                print("Availability: {}\r".format(section["maxEnrolment"] - section["currentEnrolment"]))
-                print("Current waitlist: {}\r".format(section["currentWaitlist"]))
-                print()
+                message += "\n" + section["name"]
+                availability = section["maxEnrolment"] - section["currentEnrolment"]
+                waitlist = section["currentWaitlist"]
+                message += " Availability: {}".format(availability)
+                if availability > 0:
+                    print(message)
+                    notify.send(message)
     time.sleep(5)
