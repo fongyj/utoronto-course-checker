@@ -2,6 +2,7 @@ import requests
 import time
 from notify_run import Notify
 from interested_courses import interested_courses
+import datetime
 
 url = r"https://api.easi.utoronto.ca/ttb/getPageableCourses"
 payload = {"courseCodeAndTitleProps":
@@ -27,7 +28,7 @@ payload = {"courseCodeAndTitleProps":
 headers = {"Accept": "application/json"}
 
 notify = Notify()
-frequency = 60 # seconds
+frequency = 30 # seconds
 
 if __name__ == "__main__":
     while True:
@@ -51,6 +52,7 @@ if __name__ == "__main__":
                     # waitlist = section["currentWaitlist"]
                     message += " Availability: {}".format(availability)
                     if availability > 0:
+                        message += "\n" + str(datetime.datetime.now())
                         print(message)
                         print()
                         notify.send(message)
