@@ -28,9 +28,8 @@ payload = {"courseCodeAndTitleProps":
 headers = {"Accept": "application/json"}
 
 notify = Notify()
-frequency = 15 # seconds
+frequency = 5 # seconds
 availabilities = {i['courseCode']:0 for i in interested_courses}
-print(availabilities)
 
 if __name__ == "__main__":
     while True:
