@@ -28,7 +28,9 @@ payload = {"courseCodeAndTitleProps":
 headers = {"Accept": "application/json"}
 
 notify = Notify()
-frequency = 30 # seconds
+frequency = 15 # seconds
+availabilities = {i['courseCode']:0 for i in interested_courses}
+print(availabilities)
 
 if __name__ == "__main__":
     while True:
@@ -49,9 +51,12 @@ if __name__ == "__main__":
                 if section["type"] == "Lecture":
                     message += "\n" + section["name"]
                     availability = section["maxEnrolment"] - section["currentEnrolment"]
-                    # waitlist = section["currentWaitlist"]
+                    waitlist = section["currentWaitlist"]
                     message += " Availability: {}".format(availability)
-                    if availability > 0:
+
+                    prev_availability = availabilities[course["code"]] 
+                    if availability != prev_availability:
+                        availabilities[course["code"]] = availability
                         message += "\n" + str(datetime.datetime.now())
                         print(message)
                         print()
