@@ -53,9 +53,12 @@ if __name__ == "__main__":
                     waitlist = section["currentWaitlist"]
                     message += " Availability: {}".format(availability)
 
-                    prev_availability = availabilities[course["code"]] 
+                    key = course["code"] + " " + section["name"]
+                    if key not in availabilities:
+                        availabilities[key] = 0
+                    prev_availability = availabilities[key]
                     if availability != prev_availability:
-                        availabilities[course["code"]] = availability
+                        availabilities[key] = availability
                         message += "\n" + str(datetime.datetime.now())
                         print(message)
                         print()
