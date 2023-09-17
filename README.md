@@ -2,4 +2,4 @@
 
 This is motivated by the first come first serve course registration system for the period after the waitlist closes.
 
-[Set up](https://notify.run/) is required for notify-run on mobile phone/another device to receive notifications.
+[Set up](https://notify.run/) is required for notify-run on mobile phone/another device to receive notifications. Run *course_checker.py* after updating *interested_courses.py* and installing dependencies.
